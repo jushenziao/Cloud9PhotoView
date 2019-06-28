@@ -11,7 +11,6 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.aicc.cloud9.Dispatcher
 import com.aicc.cloud9.DragableViewHolder
-import com.aicc.cloud9.util.Constants
 import com.bumptech.glide.Glide
 import com.zhihu.matisse.Matisse
 import com.zhihu.matisse.MimeType

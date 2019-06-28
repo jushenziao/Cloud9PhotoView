@@ -40,8 +40,8 @@ class SimpleItemTouchHelperCallback<T>(
         recyclerView: RecyclerView, source: RecyclerView.ViewHolder,
         target: RecyclerView.ViewHolder
     ): Boolean {
-        val start = mDispatcher.start
-        val end = mDispatcher.end
+        val start = mDispatcher.start()
+        val end = mDispatcher.end()
         if (source.itemViewType != target.itemViewType) {
             return false
         }

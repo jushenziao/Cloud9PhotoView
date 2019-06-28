@@ -8,17 +8,17 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.aicc.cloud9.helper.ItemTouchHelperAdapter
 import com.aicc.cloud9.helper.SimpleItemTouchHelperCallback
-import com.aicc.cloud9.util.Constants
 
 class Dispatcher<T> : ItemTouchHelperAdapter {
 
     private lateinit var photoView: RecyclerView;
     private lateinit var mItemTouchHelper: ItemTouchHelper
     private lateinit var mParentView: ParentView
-    private var mRoot: ViewGroup? = null
     private lateinit var mContext: Context
     private lateinit var mTouchCallBack: SimpleItemTouchHelperCallback<T>
+    private lateinit var mPosProvider: IPosProvider
     private var inited: Boolean = false
+    private var mRoot: ViewGroup? = null
 
     private var mSelectedPhotos: java.util.ArrayList<T>? = java.util.ArrayList()
 
@@ -28,7 +28,7 @@ class Dispatcher<T> : ItemTouchHelperAdapter {
     @MainThread
     fun onCreate(
         rootContainer: ViewGroup, ctx: Context, photoRecyclerView: RecyclerView,
-        list: java.util.ArrayList<T>
+        list: java.util.ArrayList<T>, posProvider: IPosProvider
     ) {
         checkIsInit()
         inited = true
@@ -39,12 +39,13 @@ class Dispatcher<T> : ItemTouchHelperAdapter {
         mItemTouchHelper = ItemTouchHelper(mTouchCallBack)
         mItemTouchHelper.attachToRecyclerView(photoRecyclerView)
         mSelectedPhotos = list
+        mPosProvider = posProvider
     }
 
     @MainThread
     fun onCreate(
         parentView: ParentView, ctx: Context, photoRecyclerView: RecyclerView,
-        list: java.util.ArrayList<T>
+        list: java.util.ArrayList<T>, posProvider: IPosProvider
     ) {
         checkIsInit()
         inited = true
@@ -55,6 +56,7 @@ class Dispatcher<T> : ItemTouchHelperAdapter {
         mItemTouchHelper = ItemTouchHelper(mTouchCallBack)
         mItemTouchHelper.attachToRecyclerView(photoRecyclerView)
         mSelectedPhotos = list
+        mPosProvider = posProvider
     }
 
     private fun checkIsInit() {
@@ -92,7 +94,7 @@ class Dispatcher<T> : ItemTouchHelperAdapter {
     }
 
     override fun onItemMove(fromPosition: Int, toPosition: Int): Boolean {
-        if (fromPosition == toPosition || toPosition == mSelectedPhotos!!.size && mSelectedPhotos!!.size < Constants.MAX_PHOTO_NUMS) {
+        if (fromPosition == toPosition || mPosProvider.canItemMove(fromPosition, toPosition)) {
             return false
         }
         innerItemMove(fromPosition, toPosition)
@@ -102,12 +104,14 @@ class Dispatcher<T> : ItemTouchHelperAdapter {
     override fun onItemDismiss(position: Int) {
     }
 
-    override val start: Int
-        get() = 0
 
-    override val end: Int
-        get() =
-            mSelectedPhotos?.size ?: 0
+    override fun start(): Int {
+        return mPosProvider.start()
+    }
+
+    override fun end(): Int {
+        return mPosProvider.end()
+    }
 
     fun onDestroy() {
 

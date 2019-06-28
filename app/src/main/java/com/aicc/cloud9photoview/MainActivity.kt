@@ -12,13 +12,13 @@ import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.aicc.cloud9.Dispatcher
+import com.aicc.cloud9.IPosProvider
 import com.aicc.cloud9.ParentView
-import com.aicc.cloud9.util.Constants
 import com.zhihu.matisse.Matisse
 import java.util.*
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), IPosProvider {
 
     companion object {
         const val TAG = "MainActivity"
@@ -45,8 +45,21 @@ class MainActivity : AppCompatActivity() {
         val layoutManage = GridLayoutManager(this, Constants.MAX_PHOTO_COLUMNS)
         photoRecyclerView.setLayoutManager(layoutManage)
         photoRecyclerView.setAdapter(mAdapter)
-        mDispatcher.onCreate(parentView, this, photoRecyclerView, mSelectedPhotos)
+        mDispatcher.onCreate(parentView, this, photoRecyclerView, mSelectedPhotos, this)
     }
+
+    override fun end(): Int {
+        return mSelectedPhotos.size
+    }
+
+    override fun start(): Int {
+        return 0
+    }
+
+    override fun canItemMove(fromPosition: Int, toPosition: Int): Boolean {
+        return toPosition == mSelectedPhotos.size && mSelectedPhotos.size < Constants.MAX_PHOTO_NUMS
+    }
+
 
     override fun onDestroy() {
         super.onDestroy()
@@ -63,8 +76,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onPhotoResult(uris: List<Uri>) {
-        mSelectedPhotos?.clear()
-        mSelectedPhotos?.addAll(uris)
+        mSelectedPhotos.clear()
+        mSelectedPhotos.addAll(uris)
         mAdapter.notifyDataSetChanged()
     }
 }
