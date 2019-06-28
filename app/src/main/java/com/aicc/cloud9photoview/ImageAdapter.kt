@@ -9,13 +9,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
-import com.aicc.cloud9photoview.util.Constants
+import com.aicc.cloud9.Dispatcher
+import com.aicc.cloud9.DragableViewHolder
+import com.aicc.cloud9.util.Constants
 import com.bumptech.glide.Glide
 import com.zhihu.matisse.Matisse
 import com.zhihu.matisse.MimeType
 import com.zhihu.matisse.engine.impl.GlideEngine
 
-class ImageAdapter(var context: Context, val dispatcher: Dispatcher, var list: List<Uri>?) :
+class ImageAdapter(var context: Context, val dispatcher: Dispatcher<Uri>, var list: List<Uri>?) :
     RecyclerView.Adapter<DragableViewHolder>() {
     var mInflater: LayoutInflater
 

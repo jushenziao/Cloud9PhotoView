@@ -1,4 +1,4 @@
-package com.aicc.cloud9photoview
+package com.aicc.cloud9
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView

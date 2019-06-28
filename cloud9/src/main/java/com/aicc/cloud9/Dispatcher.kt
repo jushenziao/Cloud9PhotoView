@@ -1,33 +1,35 @@
-package com.aicc.cloud9photoview
+package com.aicc.cloud9
 
 import android.content.Context
-import android.net.Uri
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.annotation.MainThread
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.aicc.cloud9photoview.helper.ItemTouchHelperAdapter
-import com.aicc.cloud9photoview.helper.SimpleItemTouchHelperCallback
-import com.aicc.cloud9photoview.util.Constants
-import java.util.*
+import com.aicc.cloud9.helper.ItemTouchHelperAdapter
+import com.aicc.cloud9.helper.SimpleItemTouchHelperCallback
+import com.aicc.cloud9.util.Constants
 
-class Dispatcher : ItemTouchHelperAdapter {
+class Dispatcher<T> : ItemTouchHelperAdapter {
 
-    public val mSelectedPhotos: ArrayList<Uri>? = ArrayList()
     private lateinit var photoView: RecyclerView;
     private lateinit var mItemTouchHelper: ItemTouchHelper
     private lateinit var mParentView: ParentView
     private var mRoot: ViewGroup? = null
     private lateinit var mContext: Context
-    private lateinit var mTouchCallBack: SimpleItemTouchHelperCallback
+    private lateinit var mTouchCallBack: SimpleItemTouchHelperCallback<T>
     private var inited: Boolean = false
+
+    private var mSelectedPhotos: java.util.ArrayList<T>? = java.util.ArrayList()
 
     /**
      * 支持两种创建方式 1，外部传入ParentView 2 外部传入rootView 内部创建parentView添加到rootView里
      */
     @MainThread
-    fun onCreate(rootContainer: ViewGroup, ctx: Context, photoRecyclerView: RecyclerView) {
+    fun onCreate(
+        rootContainer: ViewGroup, ctx: Context, photoRecyclerView: RecyclerView,
+        list: java.util.ArrayList<T>
+    ) {
         checkIsInit()
         inited = true
         mRoot = rootContainer
@@ -36,10 +38,14 @@ class Dispatcher : ItemTouchHelperAdapter {
         photoView = photoRecyclerView
         mItemTouchHelper = ItemTouchHelper(mTouchCallBack)
         mItemTouchHelper.attachToRecyclerView(photoRecyclerView)
+        mSelectedPhotos = list
     }
 
     @MainThread
-    fun onCreate(parentView: ParentView, ctx: Context, photoRecyclerView: RecyclerView) {
+    fun onCreate(
+        parentView: ParentView, ctx: Context, photoRecyclerView: RecyclerView,
+        list: java.util.ArrayList<T>
+    ) {
         checkIsInit()
         inited = true
         mParentView = parentView
@@ -48,6 +54,7 @@ class Dispatcher : ItemTouchHelperAdapter {
         photoView = photoRecyclerView
         mItemTouchHelper = ItemTouchHelper(mTouchCallBack)
         mItemTouchHelper.attachToRecyclerView(photoRecyclerView)
+        mSelectedPhotos = list
     }
 
     private fun checkIsInit() {
@@ -72,8 +79,8 @@ class Dispatcher : ItemTouchHelperAdapter {
     }
 
     fun innerItemMove(fromPosition: Int, toPosition: Int) {
-        val photo = mSelectedPhotos!!.removeAt(fromPosition)
-        mSelectedPhotos.add(toPosition, photo)
+        val photo = mSelectedPhotos?.removeAt(fromPosition)
+        photo?.let { mSelectedPhotos?.add(toPosition, it) }
         photoView.adapter?.notifyItemMoved(fromPosition, toPosition)
     }
 
@@ -81,12 +88,6 @@ class Dispatcher : ItemTouchHelperAdapter {
         mParentView.clear()
         mRoot?.removeView(mParentView)
         mTouchCallBack.removeOnDrawListener()
-        photoView.adapter?.notifyDataSetChanged()
-    }
-
-    fun onPhotoResult(uris: List<Uri>) {
-        mSelectedPhotos?.clear()
-        mSelectedPhotos?.addAll(uris)
         photoView.adapter?.notifyDataSetChanged()
     }
 

@@ -1,4 +1,4 @@
-package com.aicc.cloud9photoview.helper
+package com.aicc.cloud9.helper
 
 interface ItemTouchHelperAdapter {
 

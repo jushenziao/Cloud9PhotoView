@@ -1,16 +1,16 @@
-package com.aicc.cloud9photoview.helper
+package com.aicc.cloud9.helper
 
 import android.content.Context
 import android.graphics.Canvas
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.aicc.cloud9photoview.Dispatcher
-import com.aicc.cloud9photoview.util.ScreenUtils
+import com.aicc.cloud9.Dispatcher
+import com.aicc.cloud9.util.ScreenUtils
 
-class SimpleItemTouchHelperCallback(
+class SimpleItemTouchHelperCallback<T>(
     private val mContext: Context,
-    private val mDispatcher: Dispatcher
+    private val mDispatcher: Dispatcher<T>
 ) :
     ItemTouchHelper.Callback() {
     private var mOnDrawListener: OnDrawListener? = null

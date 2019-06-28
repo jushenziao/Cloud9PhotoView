@@ -1,4 +1,4 @@
-package com.aicc.cloud9photoview.util
+package com.aicc.cloud9.util
 
 /**
  * Created by SaiZhang on 2019-06-20 17:25

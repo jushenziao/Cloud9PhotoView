@@ -1,4 +1,4 @@
-package com.aicc.cloud9photoview
+package com.aicc.cloud9
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -8,8 +8,8 @@ import android.graphics.Rect
 import android.util.AttributeSet
 import android.widget.FrameLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.aicc.cloud9photoview.helper.SimpleItemTouchHelperCallback
-import com.aicc.cloud9photoview.util.ScreenUtils
+import com.aicc.cloud9.helper.SimpleItemTouchHelperCallback
+import com.aicc.cloud9.util.ScreenUtils
 
 class ParentView : FrameLayout, SimpleItemTouchHelperCallback.OnDrawListener {
 
@@ -27,7 +27,7 @@ class ParentView : FrameLayout, SimpleItemTouchHelperCallback.OnDrawListener {
     override fun dispatchDraw(canvas: Canvas) {
         super.dispatchDraw(canvas)
         if (mDragingBitmap != null && !mDragingBitmap!!.isRecycled()) {
-            canvas.drawBitmap(mDragingBitmap, null, mDstRect, null)
+            canvas.drawBitmap(mDragingBitmap!!, null, mDstRect, null)
         }
     }
 

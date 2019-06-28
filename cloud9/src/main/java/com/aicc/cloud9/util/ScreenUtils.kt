@@ -1,4 +1,4 @@
-package com.aicc.cloud9photoview.util
+package com.aicc.cloud9.util
 
 import android.content.Context
 import android.content.res.Resources
