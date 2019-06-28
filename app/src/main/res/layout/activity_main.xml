@@ -8,9 +8,7 @@
         android:orientation="vertical">
     <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@+id/function_ll"
-            android:layout_below="@+id/title">
+            android:layout_height="match_parent">
 
         <LinearLayout
                 android:id="@+id/publish_container"
@@ -34,12 +32,11 @@
                     android:textColorHint="#B5B5B5"
                     android:textSize="18sp"/>
 
-            <com.aicc.cloud9photoview.PhotoRecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/photo_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
         </LinearLayout>
     </ScrollView>
-
 
 </com.aicc.cloud9photoview.ParentView>

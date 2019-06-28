@@ -10,8 +10,7 @@ import com.aicc.cloud9photoview.util.ScreenUtils
 
 class SimpleItemTouchHelperCallback(
     private val mContext: Context,
-    private val mDispatcher: Dispatcher,
-    private val mAdapter: DragableAdapter
+    private val mDispatcher: Dispatcher
 ) :
     ItemTouchHelper.Callback() {
     private var mOnDrawListener: OnDrawListener? = null
@@ -41,8 +40,8 @@ class SimpleItemTouchHelperCallback(
         recyclerView: RecyclerView, source: RecyclerView.ViewHolder,
         target: RecyclerView.ViewHolder
     ): Boolean {
-        val start = mAdapter.start
-        val end = mAdapter.end
+        val start = mDispatcher.start
+        val end = mDispatcher.end
         if (source.itemViewType != target.itemViewType) {
             return false
         }
@@ -50,7 +49,7 @@ class SimpleItemTouchHelperCallback(
         if (source.adapterPosition >= start && source.adapterPosition <= end
             && target.adapterPosition >= start && target.adapterPosition <= end
         ) {
-            mAdapter.onItemMove(source.adapterPosition, target.adapterPosition)
+            mDispatcher.onItemMove(source.adapterPosition, target.adapterPosition)
             return true
         }
         return false
@@ -79,7 +78,7 @@ class SimpleItemTouchHelperCallback(
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, i: Int) {
-        mAdapter.onItemDismiss(viewHolder.adapterPosition)
+        mDispatcher.onItemDismiss(viewHolder.adapterPosition)
     }
 
     override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
@@ -90,6 +89,10 @@ class SimpleItemTouchHelperCallback(
 
     fun setOnDrawListener(onDrawListener: OnDrawListener) {
         mOnDrawListener = onDrawListener
+    }
+
+    fun removeOnDrawListener() {
+        mOnDrawListener = null
     }
 
     interface OnDrawListener {

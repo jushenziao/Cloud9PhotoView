@@ -8,22 +8,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import com.aicc.cloud9photoview.helper.DragableAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.aicc.cloud9photoview.util.Constants
 import com.bumptech.glide.Glide
 import com.zhihu.matisse.Matisse
 import com.zhihu.matisse.MimeType
 import com.zhihu.matisse.engine.impl.GlideEngine
 
-class ImageAdapter(var context: Context, val dispatcher: Dispatcher, var list: List<Uri>?) : DragableAdapter() {
+class ImageAdapter(var context: Context, val dispatcher: Dispatcher, var list: List<Uri>?) :
+    RecyclerView.Adapter<DragableViewHolder>() {
     var mInflater: LayoutInflater
-
-    override val start: Int
-        get() = 0
-
-    override val end: Int
-        get() =
-            list?.size ?: 0
 
     override fun getItemCount(): Int {
         var total = list?.size ?: 0
@@ -68,14 +62,6 @@ class ImageAdapter(var context: Context, val dispatcher: Dispatcher, var list: L
         return position.toLong()
     }
 
-    override fun onItemMove(fromPosition: Int, toPosition: Int): Boolean {
-        if (fromPosition == toPosition || toPosition == list!!.size && list!!.size < Constants.MAX_PHOTO_NUMS) {
-            return false
-        }
-        dispatcher.onItemMove(this, fromPosition, toPosition)
-        return true
-    }
-
     private fun openPhotoSelector() {
         if (context is Activity) {
             val activity: Activity = context as Activity;
@@ -90,8 +76,6 @@ class ImageAdapter(var context: Context, val dispatcher: Dispatcher, var list: L
         }
 
     }
-
-    override fun onItemDismiss(position: Int) {}
 
     internal inner class ViewHolder(itemView: View) : DragableViewHolder(itemView) {
         var imageView: ImageView

@@ -6,12 +6,12 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Rect
 import android.util.AttributeSet
-import android.widget.RelativeLayout
+import android.widget.FrameLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.aicc.cloud9photoview.helper.SimpleItemTouchHelperCallback
 import com.aicc.cloud9photoview.util.ScreenUtils
 
-class ParentView : RelativeLayout, SimpleItemTouchHelperCallback.OnDrawListener {
+class ParentView : FrameLayout, SimpleItemTouchHelperCallback.OnDrawListener {
 
     private var mDragingBitmap: Bitmap? = null;
 

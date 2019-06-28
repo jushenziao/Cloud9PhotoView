@@ -34,4 +34,5 @@ proguard/
 
 # Output
 apks_out/
+.idea/
 
