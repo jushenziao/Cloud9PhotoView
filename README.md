@@ -6,3 +6,4 @@
 
 
 ![image](https://github.com/jushenziao/Cloud9PhotoView/blob/master/images/QQ20190620.gif)
+![image](https://github.com/jushenziao/Cloud9PhotoView/blob/master/images/5uvsq-lfebx.gif)
